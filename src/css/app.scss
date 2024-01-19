@@ -1,13 +1,30 @@
 .app {
-  text-align: start;
+  width: 100%;
+  height: 100vh;
+  overflow-y: hidden;
+
+  .app-scroll-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    overflow-y: auto;
+
+    .app-container {
+      max-width: 700px;
+      width: -webkit-fill-available;
+      height: 100%;
+    }
+  }
 }
 
-.app-header {
-  // background-color: #282c34;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  // color: white;
+h6 {
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
 }
