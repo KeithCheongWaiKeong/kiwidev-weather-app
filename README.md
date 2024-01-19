@@ -9,8 +9,9 @@ This project was made for the purpose of an interview test conducted by [Merquri
 | Web Interface | ReactJS |
 | Creation Tool | Create React App |
 | Framework | React Bootstrap |
-| Weather API | OpenWeather |
+| Style Sheet | SASS |
 | Code Linters | Eslint/Prettier |
+| Weather API | OpenWeather |
 
 ### Features
 
