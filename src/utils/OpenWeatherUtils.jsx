@@ -6,13 +6,13 @@ const getGeocoding = async (query) => {
   const result = await fetch(apiUrl)
     .then(response => {
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Network Unresponsive.');
       }
       return response.json();
     })
     .then(data => {
       if (!data[0]) {
-        throw new Error('Bad Search');
+        throw new Error('City or Country not found.');
       }
 
       const latLon = {
@@ -31,7 +31,7 @@ const getCurrentWeatherData = async (lat, lon) => {
   const result = await fetch(apiUrl)
     .then(response => {
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Network Unresponsive.');
       }
       return response.json();
     })
