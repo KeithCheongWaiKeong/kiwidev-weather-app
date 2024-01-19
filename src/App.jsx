@@ -1,107 +1,85 @@
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { getCurrentWeatherData, getGeocoding } from './utils/OpenWeatherUtils';
-import { useEffect, useState } from 'react';
+import React from "react";
+import { getCurrentWeatherData, getGeocoding } from "./utils/OpenWeatherUtils";
+import { useEffect, useState } from "react";
+import SearchBar from "./components/SearchBar";
+import WeatherCard from "./components/WeatherCard";
 
 const App = () => {
   const [currentWeather, setCurrentWeather] = useState(null);
   const [searchHistory, setSearchHistory] = useState(() => {
-    const storedHistory = localStorage.getItem('searchHistory');
+    const storedHistory = localStorage.getItem("searchHistory");
     const initialHistory = JSON.parse(storedHistory);
     return initialHistory || [];
   });
-  const [searchHasError, setSearchHasError] = useState(false);
+  const [searchError, setSearchError] = useState("");
 
   const searchWeather = async (country) => {
-    const query = country.join(',');
+    const query = country.join(",");
 
     const weatherResult = await getGeocoding(query)
-    .then((result) => {
-      return getCurrentWeatherData(result.lat, result.lon);
-    })
-    .catch((e) => {
-      console.log(e.message);
-      setSearchHasError(true);
-    });
+      .then((result) => {
+        return getCurrentWeatherData(result.lat, result.lon);
+      })
+      .catch((e) => {
+        setSearchError(e.message);
+      });
 
-    if(weatherResult) {
+    if (weatherResult) {
       const newSearchHistory = [...searchHistory];
       newSearchHistory.unshift(weatherResult);
       setSearchHistory(newSearchHistory);
 
       setCurrentWeather(weatherResult);
-      setSearchHasError(false)
+      setSearchError("");
     }
-  }
+  };
 
   const removeHistory = (index) => {
-    const newSearchHistory = searchHistory.toSpliced(index, 1);
-    setSearchHistory(newSearchHistory);
-  }
+    if (index === -1) {
+      setSearchHistory([]);
+    } else {
+      const newSearchHistory = searchHistory.toSpliced(index, 1);
+      setSearchHistory(newSearchHistory);
+    }
+  };
+
+  useEffect(() => {
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+  }, [searchHistory]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const fromDataValues = Array.from(formData.values());
 
-    await searchWeather(fromDataValues)
-  }
-
-  useEffect(() => {
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-  }, [searchHistory]);
+    await searchWeather(fromDataValues);
+  };
 
   return (
-    <div className="app">
-      <header className="app-header">
-        Today's Weather
-      </header>
-      <Form onSubmit={handleSubmit}>
-        <Form.Label>City:</Form.Label>
-        <Form.Control name="city"/>
-        <Form.Label>Country:</Form.Label>
-        <Form.Control name="country"/>
-        <Button type="submit">Search</Button>
-      </Form>
-
-      {searchHasError && <h1>ERROR</h1>}
-
-      {(currentWeather && !searchHasError) &&
-        <div className='current-weather'>
-          <h4>{`${currentWeather.country.name}, ${currentWeather.country.code}`}</h4>
-          <h1>{currentWeather.weather}</h1>
-          <h3>{currentWeather.desc}</h3>
-          <h4>{`${currentWeather.temp.min} - ${currentWeather.temp.max}`}</h4>
-          <h4>{currentWeather.humidity}</h4>
-          <h4>{currentWeather.time}</h4>
+    <div
+      className="app"
+      style={{
+        backgroundImage: "url(/assets/bg-light.png)",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="app-scroll-container">
+        <div className="app-container">
+          <SearchBar handleSubmit={handleSubmit} />
+          <WeatherCard
+            currentWeather={currentWeather}
+            searchError={searchError}
+            searchHistory={searchHistory}
+            searchWeather={searchWeather}
+            removeHistory={removeHistory}
+          />
         </div>
-      }
-
-      <div>
-        <h2>Search History</h2>
-          {searchHistory.map((history, index) =>
-            <div key={index}>
-              <h1>{history.country.name}</h1>
-              <h1>{history.country.code}</h1>
-              <h1>{history.time}</h1>
-              <Button
-                type='button'
-                onClick={() => searchWeather([history.country.name, history.country.code])}
-                >
-                  Search
-                  </Button>
-              <Button
-                type='button'
-                onClick={() => removeHistory(index)}
-              >
-                Delete
-                </Button>
-            </div>
-          )}
       </div>
-
     </div>
   );
-}
+};
 
 export default App;
