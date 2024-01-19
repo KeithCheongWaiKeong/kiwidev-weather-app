@@ -23,9 +23,11 @@ From the search history, you can either search again using a previously searched
 
 ### Running the Application
 
-After cloning the repository, you can run the following command from the root directory:
+After cloning the repository, you can run the following commands from the root directory:
 
-`npm start`
-
+```
+npm i
+npm start
+```
 This runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
