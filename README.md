@@ -4,14 +4,14 @@ This project was made for the purpose of an interview test conducted by [Merquri
 
 ### Tech Stack
 
-| Stack | Technology |
-| --- | --- |
-| Web Interface | ReactJS |
+| Stack         | Technology       |
+| ------------- | ---------------- |
+| Web Interface | ReactJS          |
 | Creation Tool | Create React App |
-| Framework | React Bootstrap |
-| Style Sheet | SASS |
-| Code Linters | Eslint/Prettier |
-| Weather API | OpenWeather |
+| Framework     | React Bootstrap  |
+| Style Sheet   | SASS             |
+| Code Linters  | Eslint/Prettier  |
+| Weather API   | OpenWeather      |
 
 ### Features
 
